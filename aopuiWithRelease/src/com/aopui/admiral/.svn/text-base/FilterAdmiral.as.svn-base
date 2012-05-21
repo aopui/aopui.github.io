@@ -1,0 +1,23 @@
+package com.aopui.admiral
+{
+	import com.greensock.TweenMax;
+
+	public class FilterAdmiral
+	{
+		public function FilterAdmiral()
+		{
+		}
+		
+		public static function gray(mc:Object,disableMouse:Boolean=true):void
+		{	
+			mc.mouseChildren=!disableMouse;
+			TweenMax.to(mc, 0, {colorMatrixFilter:{colorize:0xffffff}});
+		}
+		public static function removeFilter(mc:Object,disableMouse:Boolean=false):void
+		{
+//			TweenMax.to(mc, 0, {colorMatrixFilter:{}});
+				mc.filters=[];
+				mc.mouseChildren=!disableMouse;
+		}
+	}
+}

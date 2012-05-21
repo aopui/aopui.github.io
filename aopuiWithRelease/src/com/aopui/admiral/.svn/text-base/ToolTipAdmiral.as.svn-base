@@ -1,0 +1,84 @@
+package com.aopui.admiral
+{
+	import com.aopui.core.IToolTipClient;
+	import com.aopui.ui.Label;
+	
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
+
+	public class ToolTipAdmiral
+	{
+		public function ToolTipAdmiral()
+		{
+		}
+		private static var toolTipLayer:Sprite;
+		
+		public static function show(str:String,param:Object):void
+		{
+			if(toolTipLayer.numChildren>0)return;
+			var label:Label=new Label();
+				label.autoSize=true;
+				label.skinClass=label.getUI("ToolTipSkin");
+				label.text=str;	
+				toolTipLayer.addChild(label);
+			label.x=param.x+10;
+			label.y=param.y+10;
+			if(label.width+label.x>label.stage.stageWidth)
+				label.x-=(label.width+label.x-label.stage.stageWidth+3);
+			
+			
+		}
+		
+		private static function isIToolTip(target:DisplayObject):Object
+		{
+			var parent:DisplayObject=target;
+			if(parent is IToolTipClient)
+			{
+				return parent;
+			}
+			else
+			{
+				if(parent.parent)
+					return isIToolTip(parent.parent as DisplayObject);
+			}
+			return null;
+		}
+		
+		public static function init(tipLayer:Sprite,layers:Array):void
+		{
+			toolTipLayer=tipLayer;
+			var tar:Object;
+			var fover:Function=function(e:MouseEvent):void
+			{
+				tar=isIToolTip(e.target as DisplayObject);
+				if(tar&&tar.toolTip!="")
+				{
+					show(tar.toolTip+"",{x:e.stageX,y:e.stageY});
+				}
+			}
+				
+			var fout:Function=function(e:Event):void
+			{
+				tar=isIToolTip(e.target as DisplayObject);
+				if(tar)
+				{
+					while(toolTipLayer.numChildren>0)
+					{
+						toolTipLayer.removeChildAt(0);
+					}
+				}
+			}
+				
+			for each(var l:Sprite in layers)
+			{
+				l.addEventListener(MouseEvent.MOUSE_OVER,fover);
+				l.addEventListener(MouseEvent.MOUSE_OUT,fout);
+			}
+			
+		}
+		
+	}
+}

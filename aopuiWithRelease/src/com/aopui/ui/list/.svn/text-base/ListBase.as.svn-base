@@ -1,0 +1,321 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui.list
+{
+	import com.aopui.event.EventBase;
+	import com.aopui.event.GroupEvent;
+	import com.aopui.ui.BasicUI;
+	import com.aopui.ui.ContainBase;
+	import com.aopui.ui.txt.TxtBase;
+	
+	import flash.display.DisplayObject;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
+	import flash.text.engine.GroupElement;
+	import flash.text.engine.RenderingMode;
+	
+	[Event(type="com.aopui.event.GroupEvent",name="group_click")]
+	public class ListBase extends ContainBase
+	{
+		public var marginTop:Number=2;
+		public var marginLeft:Number=2;
+		public var horizonGap:Number=2;
+		public var verticalGap:Number=3;
+		
+		[Inspectable(enumeration="left","center","right")]
+		public var horizonAlign:String="center";
+		
+		[ArrayElementType("flash.display.DisplayObject")]
+		public var randers:Array=[];
+		public var listTypes:Array=["list","bar","tile"];
+		//list的类型
+		private var _listType:String=listTypes[0];
+		private var _data:Object;
+		private var _randerClass:Class;		
+		private var _randerSkinClass:Class;
+		
+		public var pageIndex:int=0;
+		public var renderParam:Object;
+		
+		public var renderMarginTop:Number=0;
+		public var renderMarginLeft:Number=0;
+		public var renderAutoSize:Boolean=false;
+		
+		private var _font:Object;
+		
+		
+		public function ListBase()
+		{
+			super();
+			listen();
+		}
+		
+		public function get font():Object
+		{
+			return _font;
+		}
+
+		public function set font(value:Object):void
+		{
+			_font = value;
+		}
+
+		public function get listType():String
+		{
+			return _listType;
+		}
+		
+		[Inspectable(enumeration="list","bar","tile")]
+		public function set listType(value:String):void
+		{
+			_listType = value;
+		}
+
+		public function getPageSize():int
+		{
+			if(listType==listTypes[0])return 20;
+			return 100;
+		}
+		public function getPages():int
+		{
+			var pageSize:int=getPageSize();
+			var pages:int=_data.length/pageSize;
+			if(_data.length%pageSize>1)pages++;
+			return pages;
+		}
+		
+		protected function listen():void
+		{
+			this.addEventListener(MouseEvent.CLICK,groupClickHandler);
+			this.addEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
+			this.addEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
+			this.addEventListener(GroupEvent.GROUP_CLICK, onGroupClick);
+		}
+		protected function onMouseOut(e:Event):void
+		{
+			if(!_randerClass)return;
+			var target:Object=isRenderClass(e.target);
+			if(target is _randerClass)
+			{
+				var r:RenderBase=RenderBase(target);
+				r.onOut();
+			}
+		}
+		protected function onMouseOver(e:Event):void
+		{
+			if(!_randerClass)return;
+			var target:Object=isRenderClass(e.target);
+			if(target is _randerClass)
+			{	
+				var r:RenderBase=RenderBase(target);
+				r.onOver();
+			}
+		}
+		protected function groupClickHandler(e:Event):void
+		{
+			if(!_randerClass)return;
+			var target:Object=isRenderClass(e.target);
+			if(target is _randerClass)
+			{	
+				var r:RenderBase=RenderBase(target);
+				if(r.selected)return;
+				dispatchEvent(EventBase.createEvent(GroupEvent.GROUP_CLICK,{target:r,index:r.index,data:r.data}));
+				r.onClick();
+			}
+		}
+		
+		private function isRenderClass(o:Object):Object
+		{
+			if(!o)return null;
+			var p:Object=o;
+			if(p is _randerClass)return p;
+			while(p.parent)
+			{
+				if(p is _randerClass)return p;
+				p=p.parent;
+			}
+			return o;
+		}
+		
+		public function get randerSkinClass():Class
+		{
+			return _randerSkinClass;
+		}
+
+		public function set randerSkinClass(value:Class):void
+		{
+			_randerSkinClass = value;
+		}
+
+		public function set randerClass(cls:Class):void
+		{
+			_randerClass=cls;
+		}
+		
+		public function get randerClass():Class
+		{
+			return _randerClass;
+		}
+		
+		public function createRender():void
+		{
+			var defaultLength:int=0;
+			var pageSize:int=getPageSize();
+			var pageData:Array=[];
+			
+			var startIndex:int=pageSize*pageIndex;
+			var endIndex:int=pageSize*pageIndex+pageSize;
+			if(endIndex>_data.length)endIndex=_data.length;
+			for(var pi:int=startIndex;pi<endIndex;pi++)
+			{
+				pageData.push(_data[pi]);
+			}
+			defaultLength=pageData.length;
+			if(defaultLength>20)defaultLength=20;
+			var rander:RenderBase;
+			for(var i:int=0;i<defaultLength;i++)
+			{
+				rander=new _randerClass();
+				if((rander is TxtBase)&& this._font)
+				{
+					Object(rander)["font"]=_font;
+				}
+				
+				rander.index=i+pageIndex*pageSize;
+				if(_randerSkinClass)rander.skinClass=_randerSkinClass;
+				if(renderParam)
+					rander.setParam(renderParam);
+				if(Object(rander).hasOwnProperty("autoSize"))
+				{
+					Object(rander).autoSize=this.renderAutoSize;
+					Object(rander).marginLeft=this.renderMarginLeft;
+				}
+				containAddChild(rander);
+				randers.push(rander);
+			}
+			if(listType!=listTypes[0])return;
+			for(i=0;i<pageSize-defaultLength;i++)
+			{
+				rander=new _randerClass();
+				rander.index=defaultLength+i;
+				if(_randerSkinClass)rander.skinClass=_randerSkinClass;
+				if(renderParam)
+					rander.setParam(renderParam);
+				
+//				if(Object(rander).hasOwnProperty("autoSize"))
+//				{
+//					Object(rander).autoSize=this.renderAutoSize;
+//					Object(rander).marginLeft=this.renderMarginLeft;
+//				}
+				containAddChild(rander);
+
+				randers.push(rander);
+			}
+		}
+		
+		
+		override public function reDrawMask():void
+		{
+			if(!needMask)return;
+			contentMask.graphics.beginFill(0xffffff);
+			var r:Rectangle=getBounds(contentLayer);
+			var maskWidth:Number=r.right-r.left;
+			if(maskWidth>width-2*(marginLeft-1))maskWidth=width-2*(marginLeft-1);
+			contentMask.graphics.drawRect(marginLeft-1,marginTop-1,maskWidth,r.bottom-r.top);
+			contentMask.graphics.endFill();
+			contentLayer.mask=contentMask;
+		}
+		
+		protected function HLayout():void
+		{
+			for(var i:int=0;i<randers.length;i++)
+			{
+				var rander:DisplayObject=randers[i] as DisplayObject;
+				var preWidth:Number=.0;
+				var prex:Number=.0;
+				var usedHhorizonGap:Number=.0;
+				if(i>0)
+				{
+					var rect:Rectangle=randers[i-1].getBounds(randers[i-1]);
+					preWidth=randers[i-1].width+rect.left;
+					prex=randers[i-1].x;
+					usedHhorizonGap=horizonGap;
+				}
+				rander.x=marginLeft+preWidth+prex+usedHhorizonGap;
+////				rander.width=rander.width;
+////				Object(rander.bg).width
+//				trace("preWidth:"+preWidth);
+//				trace("prex:"+prex);
+//				trace("usedHhorizonGap:"+usedHhorizonGap);
+//				trace(".bg.width:"+Object(rander).bg.width);
+//				trace("rander.width:"+Object(rander).width);
+//				trace("rander.x:"+Object(rander).x);
+//				var rect:Rectangle=rander.getBounds(rander);
+//				trace("rect.left:"+rect.left);
+//				trace("rect.top:"+rect.top);
+				rander.y=marginTop;
+			}
+		}
+		protected function VLayout():void
+		{
+			for(var i:int=0;i<randers.length;i++)
+			{
+				var rander:DisplayObject=randers[i] as DisplayObject;
+				rander.x=marginLeft;					
+				var preHeight:Number=0;
+				var prey:Number=0;
+				var usedVerticalGap:Number=.0;
+				if(i>0)
+				{
+					preHeight=randers[i-1].height;
+					prey=randers[i-1].y;
+					usedVerticalGap=verticalGap;
+				}
+				rander.y=marginTop+preHeight+prey+usedVerticalGap;
+			}
+		}
+		
+		public function dataingRander():void
+		{
+			var startIndex:int=getPageSize()*pageIndex;
+			var endIndex:int=getPageSize()*pageIndex+getPageSize();
+			var pageData:Array=[];
+			if(endIndex>data.length)endIndex=data.length;
+			
+			for(var i:int=startIndex;i<endIndex;i++)
+			{
+				
+				pageData.push(_data[i]);
+			}
+			endIndex=getPageSize();
+			if(endIndex>pageData.length)endIndex=pageData.length;
+			for(i=0;i<endIndex;i++)
+			{
+				var rander:RenderBase=randers[i] as RenderBase;
+				rander.data=pageData[i];
+			}
+		}
+		
+		public function set data(d:Object):void
+		{
+			this._data=d;
+			this.containRemoveAllChild();
+			randers=[];
+			this.pageIndex=0;
+		}
+		
+		public function get data():Object
+		{
+			return this._data;
+		}
+		
+		protected function onGroupClick(event:EventBase):void
+		{
+			
+		}
+	}
+}

@@ -1,0 +1,17 @@
+////////////////////////////////////////////////////////////////////////////////
+//  Copyright 2010 AOPUI.COM, All rights reserved.
+//  Aug 26, 2010
+//  @author wushihuan
+//	emial:wushihuan@163.com
+//  @version 0.1
+////////////////////////////////////////////////////////////////////////////////
+package com.aopui.ui
+{
+	public class ComponentBase extends BasicUI
+	{
+		public function ComponentBase()
+		{
+			
+		}
+	}
+}

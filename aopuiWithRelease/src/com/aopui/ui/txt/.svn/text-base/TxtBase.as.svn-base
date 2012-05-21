@@ -1,0 +1,180 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 19, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui.txt
+{
+	import com.aopui.ui.list.RenderBase;
+	
+	import flash.display.Sprite;
+	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
+
+	public class TxtBase extends RenderBase
+	{
+		private var _icon:Sprite;
+		protected var _textField:TextField=new TextField();
+		private var _textFormat:TextFormat=new TextFormat(null,14,null,true,null,null,null,null,"left");
+		private var _textFormatObj:Object
+		private var _textString:String="";
+		private var _autoSize:Boolean=false;
+		public var marginTop:Number=-2;
+		public var marginLeft:Number=2;
+		public var iconLeft:Number=4;
+		public function TxtBase()
+		{
+			super();
+			_textField.mouseEnabled=false;			
+			 addChild(_textField);
+			 text="";
+			 _textField.defaultTextFormat=_textFormat;			 
+		}
+		
+		public function get autoSize():Boolean
+		{
+			return _autoSize;
+		}
+
+		public function set autoSize(value:Boolean):void
+		{
+			_autoSize = value;
+		}
+
+		/**							
+		 * align(left,center,justify,right);	
+		 * gf{color:0xFFFFFF,blur:2,strength,alpha:1}//发光滤镜
+		 * {是否使用嵌入字体,字体,字号,颜色,粗体,斜体,下划线,URL,target,对齐方式,左边距,右边距,缩进,行距}
+		 * {embed,font,size,color,bold,italic,underline,url,target,align,leftMargin,rightMargin,indent,leading}
+		 * target是显示超链接的目标窗口
+		 */
+		private var gf:Object;
+		public function set font(tf:Object):void
+		{	_textFormatObj=tf; 
+			for(var s:String in tf)
+			{
+				if(s=="embed")
+				{
+					this.EmbedFont=tf[s];
+				}
+				else if(s=="gf")
+				{
+					this._textField.filters=[tf[s]];
+					gf=tf[s];
+				}
+				else
+					_textFormat[s]=tf[s];
+			}
+			this.text=_textString;
+		}
+		
+		public function get font():Object
+		{
+			return _textFormatObj;
+		}
+		private var _embedfont:Boolean=false;
+		public function set EmbedFont(value:Boolean):void
+		{
+			if(_embedfont==value)
+					return;
+			_embedfont=value;
+		}
+		public function get EmbedFont():Boolean
+		{
+			return _embedfont;
+		}
+		
+		public function get icon():*
+		{
+			return _icon;
+		}
+
+		public function set icon(value:*):void
+		{
+			if(_icon)this.removeChild(_icon);
+			if(value is Class)value=new value;
+			_icon = value;
+			this.addChild(_icon);
+		}
+
+		override public function layout():void
+		{
+			if(_icon)
+			{
+				_icon.x=iconLeft;
+				_icon.y=this.height/2-_icon.height/2-1;
+				_textField.x=_icon.x+_icon.width+marginLeft;
+				_textField.y=this.height/2-_textField.height/2+marginTop;				
+			}
+			else
+			{	
+//					if(this.width>_textField.textWidth)
+//						_textField.x=this.width/2-_textField.width/2+marginLeft;
+//					else
+//						_textField.x=marginLeft;
+				var rect:Rectangle=this.getBounds(this);
+				_textField.x=(this.width)/2-_textField.width/2+rect.left;//+marginLeft;
+					if(_textField.x<rect.left)
+						_textField.x=rect.left;	
+				_textField.y=this.height/2-_textField.height/2+marginTop;
+			}
+			
+			
+		}
+		
+		public function  set htmlText(txt:String):void
+		{
+			if(_textField.text==txt)return;
+//			_text.defaultTextFormat=new TextFormat(null,14,null,true);
+			_textField.defaultTextFormat=_textFormat;
+			_textField.embedFonts=_embedfont;
+			_textField.htmlText=txt;	
+			_textField.width=_textField.textWidth+4;
+			_textField.height=_textField.textHeight+4;			
+			layout();
+		}
+		
+		override public function set data(d:Object):void
+		{
+			super.data=d;
+			if(d.txt){
+				text=d.txt;
+			}
+			if(d.icon)
+			{
+				this.icon=d.icon;
+			}
+		}
+		
+		
+		public function set text(txt:String):void
+		{
+			_textString=txt;
+			_textField.defaultTextFormat=_textFormat;
+			_textField.embedFonts=_embedfont;
+			if(gf)
+				_textField.filters=[gf];
+			_textField.text=txt;
+			_textField.width=_textField.textWidth+4;
+			_textField.height=_textField.textHeight+4;			
+			layout();
+		}
+		
+		public function get text():String
+		{
+			return _textField.text;
+		}
+		public function set fontSize(value:Object):void
+		{
+			_textFormat.size=value;
+			_textField.defaultTextFormat=_textFormat;			
+		}
+		public function set color(value:Object):void
+		{
+			_textFormat.color=value;
+			_textField.defaultTextFormat=_textFormat;
+		}
+	}
+}

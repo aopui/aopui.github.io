@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/26/trunk/aopui/src/com/aopui/sdk/module
+END
+Plugin.as
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/sdk/module/Plugin.as
+END
+ModulesAllLoadedMessage.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/sdk/module/ModulesAllLoadedMessage.as
+END
+IAppModule.as
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/sdk/module/IAppModule.as
+END
+ModuleIncompleteError.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/sdk/module/ModuleIncompleteError.as
+END
+ModuleManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/26/trunk/aopui/src/com/aopui/sdk/module/ModuleManager.as
+END
+ModuleCompleteEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/sdk/module/ModuleCompleteEvent.as
+END
+ModuleInfo.as
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/sdk/module/ModuleInfo.as
+END

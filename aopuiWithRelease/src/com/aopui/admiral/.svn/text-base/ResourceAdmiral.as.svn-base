@@ -1,0 +1,61 @@
+////////////////////////////////////////////////////////////////////////////////
+//  Copyright 2010 AOPUI.COM, All rights reserved.
+//  Sep 25, 2010
+//  @author wushihuan
+//	email:wushihuan@163.com
+//  @version 0.1
+////////////////////////////////////////////////////////////////////////////////
+package com.aopui.admiral
+{
+	import flash.system.ApplicationDomain;
+	
+	import mx.resources.IResourceManager;
+	import mx.resources.ResourceManager;
+
+	public class ResourceAdmiral
+	{
+		private static var _resource:IResourceManager
+		private static var _applicationDomain:ApplicationDomain;
+		public function ResourceAdmiral()
+		{
+		}
+
+		public static function get applicationDomain():ApplicationDomain
+		{
+			return _applicationDomain;
+		}
+
+		public static function set applicationDomain(value:ApplicationDomain):void
+		{
+			_applicationDomain = value;
+		}
+
+		private static var _basePackageName:String;
+		public static function init(appDomain:ApplicationDomain,basePackageName:String):void
+		{
+			_applicationDomain=appDomain;
+			_resource=ResourceManager.getInstance();
+			_basePackageName=basePackageName;
+			
+		}
+		public static function getString(resourceName:String,
+										 parameters:Array = null,
+										 bundleName:String="strings",
+										 locale:String = null):String
+		{
+			return _resource.getString(bundleName,resourceName,parameters,locale);
+		}
+		public static function getUI(clsName:String):Object
+		{
+			var c:ApplicationDomain=_applicationDomain;
+//				c=ApplicationDomain.currentDomain;
+			var cls:Object;
+			
+			if(!c.hasDefinition(_basePackageName+clsName))
+				return c.getDefinition(clsName);
+			cls=c.getDefinition(_basePackageName+clsName);
+			return cls;
+		}
+		
+	}
+}

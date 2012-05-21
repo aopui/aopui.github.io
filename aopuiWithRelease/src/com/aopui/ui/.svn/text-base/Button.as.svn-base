@@ -1,0 +1,21 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui
+{
+	import com.aopui.ui.button.ButtonBase;
+	
+	public class Button extends ButtonBase
+	{
+		public function Button()
+		{
+			super();
+		}
+		override public function set data(d:Object):void
+		{
+			super.data=d;
+		}
+	}
+}

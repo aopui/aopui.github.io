@@ -1,0 +1,465 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui
+{
+	import client.model.Model;
+	
+	import com.aopui.admiral.FontAdmiral;
+	import com.aopui.admiral.LayoutAdmiral;
+	import com.aopui.admiral.ResourceAdmiral;
+	import com.aopui.core.inside;
+	import com.aopui.effect.page.IPageEffect;
+	import com.aopui.model.GlobalModel;
+	
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.filters.DisplacementMapFilter;
+	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
+
+	public class BasicUI extends Sprite
+	{
+		protected var bgLayer:Sprite=new Sprite();
+		protected var contentLayer:Sprite=new Sprite();
+		protected var _skinClass:Class;
+		protected var _bgInstance:Sprite;
+		use namespace inside;
+		private var _left:Number;
+		private var _right:Number;
+		private var _top:Number;
+		private var _bottom:Number;
+		private var _globalAlign:String;
+		public var state:String="";
+		public var gameuiType:String="";
+		public static var _model:Model;
+		public static var _dispather:Function;
+		public function BasicUI()
+		{
+			defaultAddChild(bgLayer);
+			defaultAddChild(contentLayer);
+			this.addEventListener(Event.ADDED_TO_STAGE,onAddToStage);
+		}
+		public function get bg():Sprite
+		{
+			return _bgInstance;
+		}
+		public function get dispather():Function
+		{
+			return _dispather;
+		}
+		public function get model():Model
+		{
+			return _model;
+		}
+
+		public function set model(value:Model):void
+		{
+			_model = value;
+		}
+
+		public function get globalAlign():String
+		{
+			return _globalAlign;
+		}
+
+		public function set globalAlign(value:String):void
+		{
+			_globalAlign = value;
+		}
+
+		public function get left():Number
+		{
+			return _left;
+		}
+
+		public function set left(value:Number):void
+		{
+			_left = value;
+		}
+
+		public function get right():Number
+		{
+			return _right;
+		}
+
+		public function set right(value:Number):void
+		{
+			_right = value;
+		}
+
+		public function get top():Number
+		{
+			return _top;
+		}
+
+		public function set top(value:Number):void
+		{
+			_top = value;
+		}
+
+		public function get bottom():Number
+		{
+			return _bottom;
+		}
+
+		public function set bottom(value:Number):void
+		{
+			_bottom = value;
+		}
+
+		override public function addChild(child:DisplayObject):DisplayObject
+		{
+			if(!child)return null;
+			contentLayer.addChild(child);
+			return child;
+		}
+		
+		override public function get numChildren():int
+		{
+			return contentLayer.numChildren;
+		}
+		
+		override public function getChildAt(index:int):DisplayObject
+		{
+			return contentLayer.getChildAt(index);
+		}
+		
+		public function defaultGetChildAt(index:int):DisplayObject
+		{
+			return super.getChildAt(index);
+		}
+		
+		inside function onAddToStage(e:Event):void
+		{
+			init();
+			this.removeEventListener(Event.ADDED_TO_STAGE,onAddToStage);
+		}
+		
+		protected function init():void
+		{
+			layout();
+		}		
+		
+		public function defaultAddChild(child:DisplayObject):DisplayObject
+		{
+			return super.addChild(child);
+		}
+		
+		public function defaultRemoveChild(child:DisplayObject):DisplayObject
+		{
+			return super.removeChild(child);
+		}
+		
+		public function resize():void
+		{
+			
+		}
+		
+		
+		
+		public function defaultContains(child:DisplayObject):Boolean
+		{
+			return super.contains(child);
+		}
+		
+		public function set skinClass(cls:Object):void
+		{
+			if(!cls)return;
+			_skinClass=cls as Class;
+			_bgInstance=new cls();
+			removeTargetAllChild(bgLayer);
+			bgLayer.addChild(_bgInstance);
+			var rect:Rectangle=getBounds(_bgInstance);
+			_bgInstance.x=-rect.left;
+			_bgInstance.y=-rect.top;
+			bgGoStop(1);
+			if(_height)
+				_bgInstance.height=this._height;
+			if(_width)
+				_bgInstance.width=this._width;
+			_bgInstance.mouseEnabled=false;
+			_bgInstance.mouseChildren=false;
+			
+		}
+		
+		public function get skinClass():Object
+		{
+			
+			return _skinClass;
+		}
+		protected function removeTargetAllChild(target:Sprite):void
+		{
+			if(!target)return;
+			while(target.numChildren)
+			{
+				target.removeChildAt(0);
+			}
+		}
+		
+		public function removeAllChild():void
+		{
+			removeTargetAllChild(contentLayer);
+		}
+		
+		override public function removeChild(child:DisplayObject):DisplayObject
+		{
+			if(contentLayer.contains(child))
+				return contentLayer.removeChild(child);
+			return null;
+		}
+		
+		public function layout():void
+		{
+			LayoutAdmiral.layout(this);
+		}
+		
+		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void
+		{
+			if(super.hasEventListener(type))super.removeEventListener(type,listener,useCapture);
+		}
+		
+		protected function bgGoStop(i:int):void
+		{
+			if(_bgInstance is MovieClip)
+			{
+//				if(MovieClip(_bgInstance).currentFrame==i)return;
+				try{MovieClip(_bgInstance).gotoAndStop(i);}catch(e:Object){
+					trace("资源不符合规则");
+				}
+			}
+		}
+		
+		private var _width:Number;
+		private var _height:Number;
+		override public function set width(value:Number):void
+		{
+			_width=value;
+			if(_bgInstance)
+			{
+				_bgInstance.width=value;
+			}			
+		}
+		public function set $width(value:Number):void
+		{
+			super.width=value;
+		}
+		
+		public function set $height(value:Number):void
+		{
+			super.height=value;
+		}
+		
+		public function get $width():Number
+		{
+			return super.width;
+		}
+		
+		public function get $height():Number
+		{
+			return super.height;
+		}
+		
+		override public function get width():Number
+		{
+			if(_bgInstance)return _bgInstance.width;
+			if(_width)
+				return _width;
+			else
+				return super.width;
+		}
+		
+		override public function get height():Number
+		{
+			if(_bgInstance)return _bgInstance.height;
+			if(_height)
+				return _height;
+			else
+				return super.height;
+		}
+		
+		override public function set height(value:Number):void
+		{
+			_height=value;
+			if(_bgInstance)
+			{
+				_bgInstance.height=value;
+			}
+		}
+		
+		public function scaleByWidth(width:Number,target:DisplayObject):Number
+		{
+			var scaleValue:Number;
+			if(target)
+			{
+				scaleValue=width/target.width;
+			}
+			else
+			{
+				scaleValue=width/this.width;
+			}
+			return scaleValue;
+		}
+		
+		public function scaleByHeight(height:Number,target:DisplayObject):Number
+		{
+			var scaleValue:Number;
+			if(target)
+			{
+				scaleValue=height/target.height;
+				target.scaleX=scaleValue;
+				target.scaleY=scaleValue;
+			}
+			else
+			{
+				scaleValue=height/this.height;
+				this.scaleX=scaleValue;
+				this.scaleY=scaleValue;
+			}
+			return scaleValue;
+		}
+		
+		public function getUI(uiname:String):Class
+		{
+			return ResourceAdmiral.getUI(uiname) as Class;
+		}
+		
+		public function set xml(x:XML):void
+		{
+			var c:XMLList=x.children();
+			appPro(x,null);				
+		}	
+		private var _components:Object={};
+		
+		protected var $:Object=_components;
+		public function showInCenter():void
+		{
+			LayoutAdmiral.showInCenter(this);
+		}
+		private function appPro(xmlData:XML,parent:Object):void
+		{
+			var instance:Object;
+			var cls:Class;
+			var clsStr:String=xmlData.name()+"";
+			if(parent)
+			{
+				if(xmlData.@path+""!="")
+					cls=getUI(xmlData.@path+"."+clsStr);
+				else
+					cls=getUI("com.aopui.ui."+clsStr);
+				instance=new cls();
+			}
+			else
+			{
+				instance=this;
+			}
+	
+			for each(var pro:Object in xmlData.attributes())
+			{
+				var stypeName:String=pro.name().localName;
+				var special:Boolean=false;
+				var tmp:String=xmlData.attribute("id");
+				switch(stypeName)
+				{
+					case "id":
+						_components[xmlData.attribute(stypeName)+""]=instance;
+						special=true;
+						break;
+					case "buttonSkinClass":
+						instance.buttonSkinClass=getUI(xmlData.attribute(stypeName)+"");
+						special=true;
+						break;
+					case "randerClass":
+						var tmpCls:Class
+						try{
+							tmpCls=getUI("com.aopui.ui."+xmlData.attribute(stypeName)+"");
+						}catch(o:*){}
+						if(!tmpCls)
+							tmpCls=getUI(xmlData.attribute(stypeName)+"");
+						instance.randerClass=tmpCls;
+						special=true;
+						break;
+					case "eventListener":
+						var eventObj:Object=xmlData.attribute(stypeName)[0];
+						eventObj=eventObj.split(",");
+						instance.addEventListener(eventObj[0],Object(this)[eventObj[1]]);
+						special=true;
+						break;
+					case "skinClass":
+						instance.skinClass=getUI(xmlData.attribute(stypeName)+"");
+						special=true;
+						break;
+					case "noParent":
+						special=true;
+						break;
+					case "pageEffect":
+						var clss:Class=getUI(xmlData.attribute(stypeName)+"");
+						var pe:IPageEffect=new clss();
+						instance.pageEffect=pe;
+						special=true;
+						break;
+					case "path":
+						special=true;
+						break;
+					case "mouseChildren":
+						var mouseChildren:String=xmlData.attribute(stypeName)+"";
+						if(mouseChildren=="false")
+							instance.mouseChildren=false;
+						else
+							instance.mouseChildren=true;
+						special=true;
+						break;
+					case "cursor":
+						if(xmlData.attribute(stypeName)+""!="non")
+							instance[stypeName]=getUI(xmlData.attribute(stypeName)+"");
+						else
+							instance[stypeName]="non";
+						special=true;
+						break;
+					case "autoWidth":
+						if(xmlData.attribute(stypeName)+""=="true")
+							instance[stypeName]=true;
+						else
+							instance[stypeName]=false;
+						special=true;
+						break;
+					case "icon":
+						instance.icon=getUI(xmlData.@icon+"");
+						special=true;
+						break;
+					case "font":
+						instance[stypeName]=FontAdmiral.getFont(xmlData.attribute(stypeName)+"");
+						special=true;
+						break;
+					default:
+						break;
+				}
+				if(!special)
+				{
+					instance[stypeName]=xmlData.attribute(stypeName)+""
+				}
+			}
+			
+			
+			var noParent:String=xmlData.@noParent
+			if(noParent!="true" && parent)
+			{
+				parent.addChild(instance as DisplayObject);
+			}
+			
+			
+			if(xmlData.children().length()>0)
+			{
+				for each(var xmlData:XML in xmlData.children())
+				{
+					appPro(xmlData,instance);
+				}
+			}
+		}
+		
+	}
+}

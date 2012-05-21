@@ -1,0 +1,27 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 19, 2010
+* WUSHIHUAN
+*/
+package com.aopui.effect.page
+{
+	import flash.display.Sprite;
+	
+	import com.aopui.ui.list.ListBase;
+
+	public interface IPageEffect
+	{	
+
+		function get contain():ListBase;
+		function set contain(c:ListBase):void;
+		function addNavigation():void
+		function remNavigation():void;
+		function layout():void;
+//		function pre1():void;		
+//		function next1():void;		
+//		function first():void;	
+//		function last():void;
+		
+		
+	}
+}

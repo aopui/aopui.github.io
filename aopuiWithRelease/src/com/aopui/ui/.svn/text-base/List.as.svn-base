@@ -1,0 +1,28 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui 
+{
+	import flash.display.Sprite;
+	
+	import com.aopui.ui.list.ListBase;
+
+	public class List  extends ListBase
+	{
+		public function List()
+		{
+			super();
+			needMask=true;
+		}
+		
+		override public function set data(d:Object):void
+		{
+			super.data=d;
+			this.createRender();
+			this.HLayout();
+			this.dataingRander();
+		}
+	}
+}

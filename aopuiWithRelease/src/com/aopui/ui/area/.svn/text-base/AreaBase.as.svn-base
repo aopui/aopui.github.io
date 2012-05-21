@@ -1,0 +1,49 @@
+////////////////////////////////////////////////////////////////////////////////
+//  Copyright 2010 AOPUI.COM, All rights reserved.
+//  Sep 26, 2010
+//  @author wushihuan
+//	email:wushihuan@163.com
+//  @version 0.1
+////////////////////////////////////////////////////////////////////////////////
+package com.aopui.ui.area
+{
+	import com.aopui.ui.txt.TxtBase;
+	
+	import flash.text.TextFormat;
+	
+	public class AreaBase extends TxtBase
+	{
+		public function AreaBase()
+		{
+			super();
+			_textField.multiline=true;
+			_textField.wordWrap=true;
+		}
+		
+		override public function layout():void
+		{
+			
+		}
+		
+		override public function set width(value:Number):void
+		{
+			super.width=value;
+			_textField.width=width;
+		}
+		
+		override public function  set htmlText(txt:String):void
+		{
+			if(_textField.text==txt)return;
+			_textField.defaultTextFormat=new TextFormat(null,12,null,true);
+			_textField.htmlText=txt;	
+		}
+		
+		override public function set text(txt:String):void
+		{	
+			if(_textField.text==txt)return;
+			_textField.defaultTextFormat=new TextFormat(null,12,null,true);
+			_textField.text=txt;
+			layout();
+		}
+	}
+}

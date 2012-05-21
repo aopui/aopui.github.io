@@ -1,0 +1,15 @@
+package client.mainui.view.panel
+{
+	import com.aopui.ui.BasicUI;
+	
+	import flash.display.Sprite;
+	
+	public class BottomPanel extends BasicUI
+	{
+		public function BottomPanel()
+		{
+			super();
+		}
+	
+	}
+}

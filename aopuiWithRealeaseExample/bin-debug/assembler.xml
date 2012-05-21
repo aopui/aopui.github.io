@@ -1,0 +1,4 @@
+<assembler>
+	<resource id="ui" startup="true" size="0" v="" url="ui.swf"/>	
+	<xml id="PATH" startup="true" size="11208" v="" url="config.xml"/>	
+</assembler>

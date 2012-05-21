@@ -1,0 +1,16 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.event
+{
+	public class GroupEvent
+	{
+		public static const GROUP_CLICK:String="group_click";
+		public function GroupEvent()
+		{
+			
+		}
+	}
+}

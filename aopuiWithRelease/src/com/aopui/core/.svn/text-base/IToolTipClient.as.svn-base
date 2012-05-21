@@ -1,0 +1,8 @@
+package com.aopui.core
+{
+	public interface IToolTipClient
+	{
+		function set toolTip(value:String):void;
+		function get toolTip():String;
+	}
+}

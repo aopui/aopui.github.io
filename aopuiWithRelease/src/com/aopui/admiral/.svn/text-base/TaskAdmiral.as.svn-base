@@ -1,0 +1,16 @@
+////////////////////////////////////////////////////////////////////////////////
+//  Copyright 2010 AOPUI.COM, All rights reserved.
+//  Nov 1, 2010
+//  @author wushihuan
+//	email:wushihuan@163.com
+//  @version 0.1
+////////////////////////////////////////////////////////////////////////////////
+package com.aopui.admiral
+{
+	public class TaskAdmiral
+	{
+		public function TaskAdmiral()
+		{
+		}
+	}
+}

@@ -1,0 +1,251 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui
+{
+	import com.aopui.effect.page.IPageEffect;
+	import com.aopui.effect.page.ListPageEffect;
+	import com.aopui.event.ContainEvent;
+	import com.aopui.event.EventBase;
+	import com.aopui.ui.list.ListBase;
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Bounce;
+	
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+
+	public class ContainBase extends BasicUI
+	{
+		
+		public var contentMask:Sprite=new Sprite();
+		public var contentSpace:Sprite=new Sprite();
+		public var itemWidth:Number;
+		
+		public var navigationPreWidth:Number=3.5;
+		public var navigationPreHeight:Number=5;
+		public var navigationVGap:Number=3;	
+		public var navigationHGap:Number=3;
+		private var _needMask:Boolean=true;
+		private var _pageEffect:IPageEffect;
+		
+		private var _content:Object;
+		private var _contentDesc:Object;
+		public function ContainBase()
+		{
+			super();
+			itemWidth=70;
+			super.addChild(contentSpace);			
+			defaultAddChild(contentMask);
+			addEventListener(ContainEvent.CONTENT_CHANGE,onContentChange);
+			navigation=true;
+		}
+
+		public function get pageEffect():IPageEffect
+		{
+			return _pageEffect;
+		}
+
+		public function set pageEffect(value:IPageEffect):void
+		{
+			if(!(this is ListBase))return;
+			value.contain=ListBase(this);
+			if(_pageEffect)_pageEffect.remNavigation();
+			_pageEffect = value;
+			if(_navigation)_pageEffect.addNavigation();
+		}
+
+		public function get needMask():Boolean
+		{
+			return _needMask;
+		}
+
+		public function set needMask(value:Boolean):void
+		{
+			_needMask = value;
+		}
+
+		private function onContentChange(e:EventBase):void
+		{
+			this.reDrawMask();
+		}
+		
+		private var _navigation:Boolean=false;
+		public function set navigation(v:Boolean):void
+		{
+			_navigation=v;
+			if(_navigation)
+			{
+				addNavigation();
+			}
+			else
+			{
+				remNavigation();
+			}
+			
+		}
+		
+		public function get navigation():Boolean
+		{
+			return _navigation;
+		}
+		
+		private function addNavigation():void
+		{if(!(this is ListBase))return;
+			if(_pageEffect)
+				_pageEffect.addNavigation();
+		}
+		
+		private function remNavigation():void
+		{if(!(this is ListBase))return;
+			if(_pageEffect)
+				_pageEffect.remNavigation();
+		}
+		
+		//当显示区域变化时候重新绘制mask
+		public function reDrawMask():void
+		{
+			
+		}
+		
+		override public function layout():void
+		{	super.layout();
+			if(!(this is ListBase))return;
+			if(_pageEffect)
+				_pageEffect.layout();
+		}
+		
+		public function containAddChild(child:DisplayObject):DisplayObject
+		{
+			var dis:DisplayObject=contentSpace.addChild(child);
+			this.dispatchEvent(EventBase.createEvent(ContainEvent.CONTENT_CHANGE,{type:"+"}));
+			return dis;
+		}
+		
+		public function containRemoveAllChild():void
+		{
+			removeTargetAllChild(contentSpace);
+			this.dispatchEvent(EventBase.createEvent(ContainEvent.CONTENT_CHANGE,{type:"--"}));
+			
+		}
+		
+		public function containRemoveChild(child:DisplayObject):DisplayObject
+		{
+			var dis:DisplayObject=contentSpace.removeChild(child);
+			this.dispatchEvent(EventBase.createEvent(ContainEvent.CONTENT_CHANGE,{type:"-"}));
+			return dis;
+		}
+
+		public function get content():Object
+		{
+			return _content;
+		}
+
+		public function set content(value:Object):void
+		{
+			_content = value;
+		}
+		
+		
+
+		public function get contentDesc():Object
+		{
+			return _contentDesc;
+		}
+
+		public function set contentDesc(value:Object):void
+		{
+			_contentDesc = value;
+			content=analyseContent(value);
+		}
+		
+		private function analyseContent(value:Object):Object
+		{
+			for(var s:String in value)
+			{
+				var cls:Class;
+				
+//				if(!cls)continue;
+				var instance:Object
+				if(value[s] is Array)
+				{
+					for each(var o:Object in value[s])
+					{
+						cls=getUI("com.aopui.ui."+s);
+						instance=new cls();
+						applyPro(value,o,instance);
+					}
+				}
+				else
+				{
+					cls=getUI("com.aopui.ui."+s);
+					instance=new cls();
+					applyPro(value,value[s],instance);
+				}
+				
+				
+				
+			}
+			return null;
+		}
+		
+		private function applyPro(contentdesc:Object,compontDescObject:Object,instance:Object):void
+		{
+			for(var pro:String in compontDescObject)
+			{
+				switch(pro)
+				{
+					case "id":
+						Object(this)[compontDescObject[pro]]=instance;
+						break;
+					case "buttonSkinClass":
+						instance.buttonSkinClass=getUI(compontDescObject[pro]);
+						break;
+					case "randerClass":
+						instance.randerClass=getUI("com.aopui.ui."+compontDescObject[pro]);
+						break;
+					case "eventListener":
+						instance.addEventListener(compontDescObject[pro][0]+"",compontDescObject[pro][1]);
+						break;
+					case "skinClass":
+						instance.skinClass=getUI(compontDescObject[pro]);
+						break;
+					case "icon":
+						instance.icon=getUI(compontDescObject[pro]);
+						break;
+					case "text":
+						instance.text=compontDescObject[pro];
+						break;
+					case "label":
+						instance.label=compontDescObject[pro];
+						break;
+					case "children":
+						for each(var _proName:String in compontDescObject[pro])
+						{
+							var child:Object=Object(this)[_proName+""];
+							if(!child)break;
+							instance.addChild(child);
+						}
+						break;
+					case "parent":
+						var parent:Object=Object(this)[compontDescObject[pro]];
+						if(!parent)break;
+						parent.addChild(instance);
+						break;
+					default:
+						break;						
+				}					
+			}
+			if(compontDescObject.noParent)
+				return;
+			this.addChild(instance as DisplayObject);
+			
+		}
+		
+
+
+	}
+}

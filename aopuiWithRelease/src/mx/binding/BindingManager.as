@@ -1,0 +1,16 @@
+////////////////////////////////////////////////////////////////////////////////
+//  Copyright 2010 AOPUI.COM, All rights reserved.
+//  Nov 4, 2010
+//  @author wushihuan
+//	email:wushihuan@163.com
+//  @version 0.1
+////////////////////////////////////////////////////////////////////////////////
+package mx.binding
+{
+	public class BindingManager
+	{
+		public function BindingManager()
+		{
+		}
+	}
+}

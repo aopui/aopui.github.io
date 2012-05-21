@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/core
+END
+UIComponent.as
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/core/UIComponent.as
+END
+ILayoutElement.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/core/ILayoutElement.as
+END
+IToolTipClient.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/core/IToolTipClient.as
+END
+IVisaulElement.as
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/core/IVisaulElement.as
+END
+inside.as
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/19/trunk/aopui/src/com/aopui/core/inside.as
+END

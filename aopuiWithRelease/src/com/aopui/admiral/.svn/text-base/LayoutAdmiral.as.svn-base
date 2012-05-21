@@ -1,0 +1,106 @@
+package com.aopui.admiral
+{
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+
+	public class LayoutAdmiral
+	{
+		public function LayoutAdmiral()
+		{
+		}
+		public static var scene:Sprite;
+		public static function layout(ui:Object):void
+		{
+			if(ui.left)
+				ui.x=ui.left;
+			if(ui.right)
+				ui.x=ui.stage.stageWidth-ui.right-ui.width;
+			if(ui.top)
+				ui.y=ui.top;
+			if(ui.bottom)
+				ui.y=ui.stage.stageHeight-ui.bottom-ui.height;
+			if(ui.globalAlign)
+			{
+				var alignData:Array=ui.globalAlign.split(",")
+				switch(alignData[0])
+				{
+					case "S":
+						ui.x=ui.stage.stageWidth/2-ui.width/2;
+						ui.y=ui.stage.stageHeight-ui.height;							
+						break;
+					case "N":
+						ui.y=0;
+						ui.x=ui.stage.stageWidth/2-ui.width/2;
+						break;
+					case "E":
+						ui.x=ui.stage.stageWidth-ui.width;
+						ui.y=ui.stage.stageHeight/2-ui.height/2;
+						break;
+					case "W":
+						ui.x=0;
+						ui.y=ui.stage.stageHeight/2-ui.height/2;
+						break;
+					case "EN":
+					case "NE":
+						ui.y=0;
+						ui.x=ui.stage.stageWidth-ui.width;
+						break;
+					case "WN":
+					case "NW":
+						ui.y=0;
+						ui.x=0;
+						break;
+					case "ES":
+					case "SE":
+						ui.x=ui.stage.stageWidth-ui.width;
+						ui.y=ui.stage.stageHeight-ui.height;
+						break;
+					case "WS":
+					case "SW":
+						ui.x=0;
+						ui.y=ui.stage.stageHeight-ui.height;
+						break;
+					default:
+						break;
+				}
+				if(alignData.length>1)
+				{
+					for(var i:int=1;i<alignData.length;i++)
+					{
+						tuning(ui,alignData[i]);
+					}
+				}
+					
+			}
+		}
+		public static function changeSence():void
+		{
+			switch (scene.stage.displayState) {
+				case "normal" :						
+					scene.stage.displayState="fullScreen";
+					break;
+				case "fullScreen":
+					scene.stage.displayState="normal";
+					break;
+				default :
+					scene.stage.displayState="normal";
+					break;
+			}
+		}
+		
+		public static function showInCenter(ui:DisplayObject):void
+		{
+			ui.x=scene.stage.stageWidth/2-ui.width/2;
+			ui.y=scene.stage.stageHeight/2-ui.height/2;
+			trace(ui.x+"::"+ui.y);
+		}
+		
+		private static function tuning(ui:Object,param:String):void
+		{
+			param=param.toLocaleLowerCase();
+			var align:String=param.substr(0,1);
+			var value:String=param.substr(1);			
+			ui[align]+=Number(value);
+		}
+	}
+}

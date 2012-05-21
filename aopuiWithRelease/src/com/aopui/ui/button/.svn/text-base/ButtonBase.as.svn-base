@@ -1,0 +1,32 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+package com.aopui.ui.button
+{
+	import com.aopui.ui.txt.TxtBase;
+	
+	import flash.geom.Rectangle;
+	
+	public class ButtonBase extends TxtBase
+	{
+		public function ButtonBase()
+		{
+			super();
+		}
+		override public function layout():void
+		{
+			super.layout();
+			if(_bgInstance&&autoSize)
+			{
+				var rect1:Rectangle=getBounds(this._bgInstance);				
+				_bgInstance.x=-rect1.left;
+				_bgInstance.y=-rect1.top;
+				var rect:Rectangle=getBounds(this);
+				this._bgInstance.width=this._textField.textWidth+(_textField.x-rect.left+marginLeft)*2;
+			}
+			super.layout();
+		}
+	}
+}

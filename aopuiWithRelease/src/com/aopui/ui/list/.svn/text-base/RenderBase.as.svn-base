@@ -1,0 +1,188 @@
+/*
+* Copyright 2010 AOPUI.COM, All rights reserved.
+* Aug 18, 2010
+* WUSHIHUAN
+*/
+//out 1,over 2,click 3,select 4
+package com.aopui.ui.list
+{
+	import com.aopui.admiral.CursorAdmiral;
+	import com.aopui.core.IToolTipClient;
+	import com.aopui.ui.BasicUI;
+	
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	
+	public class RenderBase extends BasicUI implements IToolTipClient
+	{
+		public var index:int;
+		private var _data:Object;
+		private var _selected:Boolean=false;		
+		private var _needBGEffect:Boolean=true;
+		private var _cursor:Object;
+		private var _cmd:String;
+		
+		private var _toolTip:String="";
+		
+		
+		public function RenderBase()
+		{
+			super();
+//			this.mouseChildren=false;
+			needBGEffect=true;
+		}
+		
+		
+		public function get cmd():String
+		{
+			return _cmd;
+		}
+
+		public function set cmd(value:String):void
+		{
+			_cmd = value;
+		}
+
+		public function get cursor():Object
+		{
+			return _cursor;
+		}
+
+		public function set cursor(value:Object):void
+		{
+			_cursor = value;
+			this.addEventListener(MouseEvent.CLICK,checkCursor);
+		}
+		
+		private function checkCursor(e:Event):void
+		{
+			if(this._cursor)
+				CursorAdmiral.setCursor(this);
+		}
+
+		public function get needBGEffect():Boolean
+		{
+			return _needBGEffect;
+		}
+
+		public function set needBGEffect(value:Boolean):void
+		{
+			_needBGEffect = value;
+			if(_needBGEffect)
+			{
+				listen();
+			}
+			else
+			{
+				unListen();
+			}
+		}
+
+		private function listen():void
+		{
+			this.addEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
+			this.addEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
+		}
+		private function unListen():void
+		{
+			this.removeEventListener(MouseEvent.MOUSE_OVER,onMouseOver);
+			this.removeEventListener(MouseEvent.MOUSE_OUT,onMouseOut);
+		}
+		
+		protected function onMouseOut(e:Event):void
+		{
+				onOut();
+			
+		}
+		protected function onMouseOver(e:Event):void
+		{
+				onOver();
+		}
+		
+		
+		
+		public function get selected():Boolean
+		{
+			return _selected;
+			
+		}
+		
+		public function set toolTip(value:String):void
+		{
+			this._toolTip=value;
+		}
+		public function get toolTip():String
+		{
+			return this._toolTip;
+		}
+		
+		public function onOver():void
+		{
+			if(_selected)return;
+			bgGoStop(2);
+		}
+		public function onOut():void
+		{
+			if(_selected)return;
+			bgGoStop(1);
+		}
+		public function onClick():void
+		{	if(_selected)return;
+			bgGoStop(3);
+		}
+		public function onSelect():void
+		{	if(_selected)return;
+			bgGoStop(4);
+		}
+		
+		public function set selected(value:Boolean):void
+		{
+			_selected = value;
+			setSelect(_selected);
+		}
+		
+		public function setSelect(v:Boolean):void
+		{
+			if(v)
+			{
+				bgGoStop(4);
+			}
+			else
+			{
+				bgGoStop(1);
+			}
+		}
+
+		public function set data(d:Object):void
+		{
+			_data=d;
+				try{
+				if(d.skin)
+				{
+					this.skinClass=d.skin;
+				}
+				if(d.cursor)
+				{
+					this.cursor=d.cursor;
+				}
+				if(d.cmd)
+				{
+					this.cmd=d.cmd;
+				}
+			}catch(e:Object){}
+		}
+		
+		public function get data():Object
+		{
+			return _data;
+			
+		}
+		
+		public function setParam(param:Object):void
+		{
+			
+		}
+	}
+}
