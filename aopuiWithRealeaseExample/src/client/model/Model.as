@@ -8,6 +8,7 @@ package client.model
 	public class Model extends GlobalModel
 	{	
 		
+		
 		public function Model()
 		{
 			this.formatXML(XML(_dna.xml.PATH),"path");

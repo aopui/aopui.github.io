@@ -11,6 +11,7 @@ package
 	
 	import com.adobe.serialization.json.JSON;
 	import com.aopui.admiral.FontAdmiral;
+	import com.aopui.effect.ease.DragEase;
 	import com.aopui.effect.page.ListPageEffect;
 	import com.aopui.ui.DragAbleContainer;
 	import com.aopui.ui.GameScene;
@@ -27,9 +28,11 @@ package
 	
 	import org.spicefactory.lib.logging.LogContext;
 	import org.spicefactory.lib.reflect.Metadata;
-	import sliz.miniui.RichTextField;
+	
 	import sliz.miniui.Input;
 	import sliz.miniui.Label;
+	import sliz.miniui.RichTextField;
+
 	public class Classes
 	{		
 		com.adobe.serialization.json.JSON;
@@ -49,6 +52,7 @@ package
 		FLVPlayback;
 		Label;
 		Input;
-		RichTextField
+		RichTextField;
+		DragEase;
 	}
 }

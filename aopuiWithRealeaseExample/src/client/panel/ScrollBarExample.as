@@ -1,5 +1,6 @@
 package client.panel
 {
+	import client.view.pageEffect.MobileScrollBarPageEffect;
 	import client.view.pageEffect.ScollBarPageEffect;
 	
 	import com.aopui.ui.Panel;
@@ -9,20 +10,40 @@ package client.panel
 	{
 		public function ScrollBarExample()
 		{
-			ScollBarPageEffect;
+			MobileScrollBarPageEffect;
 			TextArea;
 			super();			
-			xml=<layout trbl="0,0,0,0">
+			xml=<layout trbl="0,0,0,0" pageEffect="client.view.pageEffect.MobileScrollBarPageEffect">
+						
+					<Panel WH="110,1210" bgColor="0xffffff">
+						<VBox  x="5" y="5" WH="100,1200" verticalGap="1">
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>
+							<Panel WH="100,100" bgColor="0xfff000"/>				
+						</VBox>
+					</Panel>
+					<!--	
 						<TextArea
 									id="text1" 
 									pageEffect="client.view.pageEffect.ScollBarPageEffect"
 									font="font1"
-									width="510" 
-									height="461"
-									
+									width="480" 
+									height="480"									
 						/>
+				-->
+			
 					</layout>
-				
+//6222 0204 0902 6307 960
+					return;
 			$.text1.htmlText=				
 				"<font color='#ffff00' size='18'>PRODUCTION CREW</font><br><br>"+
 				"<font color='#ffffff'><textformat leading='7'>"+
@@ -90,6 +111,12 @@ package client.panel
 				"MARIANNE PETIT<br>"+
 				"HUAWEI SUN<br>"+
 				"WEISONG GAO</textformat></font>"
+		}
+		
+		override public function layout():void
+		{
+			super.layout();
+			pageEffect&&pageEffect.layout();
 		}
 		
 	}

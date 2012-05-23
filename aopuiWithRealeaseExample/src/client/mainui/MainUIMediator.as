@@ -48,6 +48,7 @@ package client.mainui
 		{
 			super.init();
 			
+			
 //			pan1=new ButtonExample();	
 //			marshal.uiLayer.addChild(pan1);
 //			toggleListExample=new ToggleListExample();

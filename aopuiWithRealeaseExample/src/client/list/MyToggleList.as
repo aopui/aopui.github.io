@@ -17,7 +17,6 @@ package client.list
 //						verticalGap="-20"
 						eventListener={GroupEvent.GROUP_CLICK+",groupClick"}
 						renderClass="client.ren.MyToggleListRender"/>;
-			//						direction="vertical"	
 		}
 		public function groupClick(e:EventBase):void
 		{

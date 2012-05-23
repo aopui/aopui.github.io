@@ -154,6 +154,7 @@
     <classEntry path="mx.utils.DescribeTypeCache"/>
     <classEntry path="mx.utils.DescribeTypeCacheRecord"/>
     <classEntry path="mx.utils.StringUtil"/>
+    <classEntry path="com.aopui.effect.ease.DragEase"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -8,6 +8,7 @@ package  client.view.pageEffect
 	import client.asSkin.DefaultSkin;
 	
 	import com.aopui.admiral.ResourceAdmiral;
+	import com.aopui.effect.ease.DragEase;
 	import com.aopui.effect.page.IPageEffect;
 	import com.aopui.event.EventBase;
 	import com.aopui.ui.BasicUI;
@@ -25,13 +26,13 @@ package  client.view.pageEffect
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	
-	public class ScollBarPageEffect extends Panel implements  IPageEffect
+	public class MobileScrollBarPageEffect extends Panel implements  IPageEffect
 	{	
 		DefaultSkin;
 		private var _contain:ContainBase;
 		private var bgMc:Sprite;
 		private var thumb:Sprite;
-		public function ScollBarPageEffect()
+		public function MobileScrollBarPageEffect()
 		{
 			xml=<layout top="0" bottom="0" globalAlign="E" width="7">
 				   <Button id="bg" skinClass="com.aopui.assets.verticalBarBg" top="0" bottom="0" visible="false"/>
@@ -46,6 +47,7 @@ package  client.view.pageEffect
 				</layout>;
 			this.addEventListener("scrollBarEvent",onScrolling);
 		}
+		
 		public function onScrolling(e:EventBase):void
 		{
 			var w:Number=_contain.showAbleSpace.height-this.height;
@@ -120,36 +122,80 @@ package  client.view.pageEffect
 			return _contain;
 		}
 		
+		private var ease:DragEase=new DragEase();
 		public function set contain(c:ContainBase):void
 		{
 			this._contain=c;
 			this.parentui=c;
 			this.parentui.addEventListener(MouseEvent.MOUSE_WHEEL,onwheel);
+			ease.setup(parentui,"scrollValue",this,"V",true);
 		}
 		
+	
 
 		private var tweenHide:TweenMax;
 		private var tweenShow:TweenMax;
+		private var containTween:TweenMax;
 		private function onwheel(e:MouseEvent):void
 		{
+			scrollValue-=e.delta;
+		}
+		
+		public function set scrollValue(value:Number):void
+		{	
+			
 			if(!tweenShow)
 				tweenShow=TweenMax.to($.thumb,.5,{alpha:1});
-			$.thumb.y-=e.delta;
+			var dValue:Number=value-$.thumb.y;
+			$.thumb.y=value;
 			if($.thumb.y<0)
 				$.thumb.y=0;
 			if($.thumb.y>this.height-$.thumb.height)
 				$.thumb.y=this.height-$.thumb.height;
 			var num:Number=$.thumb.y/(this.height-$.thumb.height)
+
+				
 			this.dispatchEvent(EventBase.createEvent("scrollBarEvent",{num:num}));
 			tweenHide&&tweenHide.kill();
 			tweenHide=TweenMax.delayedCall(1,function():void
-										{
-											tweenShow&&tweenShow.kill();
-											tweenShow=null;
-											TweenMax.to($.thumb,.5,{alpha:0});
-											
-										});
+			{
+				tweenShow&&tweenShow.kill();
+				tweenShow=null;
+				TweenMax.to($.thumb,.5,{alpha:0});
+				
+			});
+			
+			
+			if($.thumb.y<=0&&_contain.showAbleSpace.y==0||$.thumb.y+.1>=this.height-$.thumb.height&&-(_contain.showAbleSpace.height-this.height)<=_contain.showAbleSpace.y-.1)
+				if(!containTween)
+				{
+					var d:Number=dValue*10;
+					if(d>50)
+						d=50;
+					if(d<-50)
+						d=-50;
+					
+					this.containTween=TweenMax.to(_contain,.2,{y:_contain.y-d});
+					TweenMax.delayedCall(.2,function():void
+											{
+												TweenMax.to(_contain,.3,{y:0});
+												
+											})
+					TweenMax.delayedCall(.5,function():void
+											{
+												containTween=null;
+											}
+						)
+				}
 		}
+		
+		public function get scrollValue():Number
+		{
+			return $.thumb.y
+		}
+		
+		
+		
 		
 		public function addPageBtns():void
 		{
@@ -166,8 +212,8 @@ package  client.view.pageEffect
 			
 			if($.thumb.height>_contain.height)
 				$.thumb.height=_contain.height;
-			if($.thumb.height<20)
-				$.thumb.height=20;
+			if($.thumb.height<30)
+				$.thumb.height=30;
 			$.thumb_default.height=$.thumb_hover.height=$.thumb.height;
 			if($.thumb.height>=this.height)
 				$.thumb.visible=false;

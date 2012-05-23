@@ -42,7 +42,7 @@ package
 	import mx.resources.IResourceManager;
 	
 	[Frame(factoryClass="com.aopui.sdk.preloader.Preloader")]
-	[SWF(width="800", height="800",backgroundColor="#000000", frameRate="60")]
+	[SWF(width="800", height="480",backgroundColor="#000000", frameRate="60")]
 	public class aopuiWithRealeaseExample extends BootAdmiral 
 	{
 		Plugin;
@@ -83,7 +83,7 @@ package
 		{
 			GlobalModel.assetspre="com.aopui.assets";
 			GlobalModel.non_server=true;
-			//			GlobalModel.defaultBgAlpha=.5;
+//						GlobalModel.defaultBgAlpha=.5;
 			var gf1:Object={color:0x505050,blur:2,strength:2,alpha:1}
 			var gf3:Object={color:0x505050,blur:1,strength:1,alpha:.5}
 			var gf2:Object={color:0x30083A,blur:2,strength:2,alpha:1}
