@@ -28,7 +28,6 @@ package
 	
 	import org.spicefactory.lib.logging.LogContext;
 	import org.spicefactory.lib.reflect.Metadata;
-	
 	import sliz.miniui.Input;
 	import sliz.miniui.Label;
 	import sliz.miniui.RichTextField;
