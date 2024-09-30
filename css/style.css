@@ -582,8 +582,8 @@ blockquote cite::before {
 table {
   width: 100%;
 }
-gutter:width: 1%,
-code:width: 100%,
+.gutter:width: 1%,
+.code:width: 100%,
 table th {
   border-top: 0px solid #414141;
   border-left: 0px solid #414141;
