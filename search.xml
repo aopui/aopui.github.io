@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>nodejs多版本</title>
+      <link href="/2024/09/30/nodejs%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/"/>
+      <url>/2024/09/30/nodejs%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h5 id="n的使用方法"><a href="#n的使用方法" class="headerlink" title="n的使用方法"></a>n的使用方法</h5><p>‌安装n‌：通过npm全局安装n：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> npm install n -g<br></code></pre></td></tr></table></figure><p>‌使用n安装特定版本的Node.js‌：例如，安装最新版本：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> n latest<br></code></pre></td></tr></table></figure><p>‌查看已安装的Node.js版本‌：使用n ls命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">n <span class="hljs-built_in">ls</span><br></code></pre></td></tr></table></figure><p>‌切换Node.js版本‌：使用n命令后，通过上下箭头选择版本，然后回车确认：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">n<br></code></pre></td></tr></table></figure><p>‌删除已安装的Node.js版本‌：使用n rm命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> n <span class="hljs-built_in">rm</span> 14.17.0<br></code></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>test1</title>
       <link href="/2024/09/29/test1/"/>
       <url>/2024/09/29/test1/</url>
