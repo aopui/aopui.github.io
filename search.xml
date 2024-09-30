@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>test1</title>
+      <link href="/2024/09/29/test1/"/>
+      <url>/2024/09/29/test1/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> ttt </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>hexotest</title>
+      <link href="/2024/09/29/hexotest/"/>
+      <url>/2024/09/29/hexotest/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ConstantBoolean</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addOutput</span>(<span class="hljs-string">&quot;bool&quot;</span>, <span class="hljs-string">&quot;boolean&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addProperty</span>(<span class="hljs-string">&quot;value&quot;</span>, <span class="hljs-literal">true</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">widget</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addWidget</span>(<span class="hljs-string">&quot;toggle&quot;</span>,<span class="hljs-string">&quot;value&quot;</span>,<span class="hljs-literal">true</span>,<span class="hljs-string">&quot;value&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">serialize_widgets</span> = <span class="hljs-literal">true</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">widgets_up</span> = <span class="hljs-literal">true</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">size</span> = [<span class="hljs-number">140</span>, <span class="hljs-number">30</span>];<br>&#125;<br><br></code></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> xxx </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
