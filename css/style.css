@@ -579,18 +579,21 @@ blockquote cite::before {
   content: "-";
   padding: 0 5px;
 }
+table {
+  width: 100%;
+}
 table th {
-  border-top: 1px solid #414141;
-  border-left: 1px solid #414141;
+  border-top: 0px solid #414141;
+  border-left: 0px solid #414141;
 }
 table {
   border-spacing: 0px;
-  border-right: 1px solid #414141;
-  border-bottom: 1px solid #414141;
+  border-right: 0px solid #414141;
+  border-bottom: 0px solid #414141;
 }
 td {
-  border-top: 1px solid #414141;
-  border-left: 1px solid #414141;
+  border-top: 0px solid #414141;
+  border-left: 0px solid #414141;
 }
 @media screen and (min-width: 300px) and (max-width: 768px) {
   .logo {
